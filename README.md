@@ -18,12 +18,12 @@ A curated collection of public APIs with live testing capabilities.
 
 ## Getting Started
 
-git clone https://github.com/Adityan05/public-api-explorer.git
+'''git clone [https://github.com/Adityan05/public-api-explorer.git]https://github.com/Adityan05/public-api-explorer.git
 cd public-api-explorer
 npm install
-npm run dev
+npm run dev'''
 
-Open http://localhost:3000 to view it in the browser.
+Open [http://localhost:3000]http://localhost:3000 to view it in the browser.
 
 ## Environment Variables
 
