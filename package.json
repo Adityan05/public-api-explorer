@@ -9,15 +9,20 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
+    "@supabase/supabase-js": "^2.56.0",
+    "@uiw/react-json-view": "^2.0.0-alpha.37",
+    "lucide-react": "^0.541.0",
+    "next": "15.5.0",
+    "partycles": "^1.2.6",
     "react": "19.1.0",
-    "react-dom": "19.1.0",
-    "next": "15.5.0"
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "^3",
     "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
-    "@eslint/eslintrc": "^3"
+    "tailwindcss": "^4"
   }
 }
