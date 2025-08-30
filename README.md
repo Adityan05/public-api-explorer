@@ -18,21 +18,21 @@ A curated collection of public APIs with live testing capabilities.
 
 ## Getting Started
 
-'''
+```
 git clone https://github.com/Adityan05/public-api-explorer.git
 cd public-api-explorer
 npm install
 npm run dev
-'''
+```
 
 Open http://localhost:3000 to view it in the browser.
 
 ## Environment Variables
 
-'''js
+```js
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_anon_key
-'''
+```
 
 ## License
 
