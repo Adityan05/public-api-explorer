@@ -18,7 +18,7 @@ A curated collection of public APIs with live testing capabilities.
 
 ## Getting Started
 
-git clone https://github.com/yourusername/public-api-explorer.git
+git clone https://github.com/Adityan05/public-api-explorer.git
 cd public-api-explorer
 npm install
 npm run dev
