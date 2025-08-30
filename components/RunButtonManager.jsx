@@ -107,7 +107,7 @@ const RunButtonManager = ({ api }) => {
           Live Tester
         </h2>
         <div id="api-tester">
-          <ApiTester runUrl={testerUrl} /> {/* ✅ Now receives dynamic URL */}
+          <ApiTester runUrl={testerUrl} corsSupported={api.cors} />
         </div>
       </section>
     </>
