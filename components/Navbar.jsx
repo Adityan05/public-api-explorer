@@ -1,103 +1,212 @@
-// import Link from "next/link";
-// import Image from "next/image";
-// import ThemeToggle from "./ThemeToggle";
-// import { PlusCircle } from "lucide-react";
+"use client";
 
-// const Navbar = () => (
-//   <header className="w-full bg-indigo-500 text-white dark:bg-indigo-600 ">
-//     <nav className="mx-auto flex max-w-6xl items-center justify-between px-8 py-5">
-//       {/* logo */}
-//       <Link href="/" className="flex items-center">
-//         <Image
-//           src="/publicapilogo-light.png"
-//           alt="Public API Explorer"
-//           width={120}
-//           height={40}
-//           className="h-10 w-auto"
-//         />
-//       </Link>
-
-//       {/* links + dark-mode toggle */}
-//       <div className="flex items-center gap-6 text-base md:text-lg font-medium">
-//         <Link
-//           href="/add-api"
-//           className="inline-flex items-center gap-2 text-lg text-white hover:underline transition"
-//         >
-//           <PlusCircle className="w-5 h-5" />
-//           Add your API
-//         </Link>
-
-//         <Link href="/" className="hover:text-indigo-200">
-//           Home
-//         </Link>
-//         <Link href="/favorites" className="hover:text-indigo-200">
-//           Favorites
-//         </Link>
-
-//         <ThemeToggle />
-//       </div>
-//     </nav>
-//   </header>
-// );
-
-// export default Navbar;
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import ThemeToggle from "./ThemeToggle";
-import { PlusCircle, Home, Star } from "lucide-react";
+import { PlusCircle, Home, Menu, X, BookOpen, Heart } from "lucide-react";
+import GitHubButton from "react-github-btn";
 
-const Navbar = () => (
-  <header className="w-full bg-indigo-500 text-white dark:bg-indigo-600 ">
-    <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 md:px-8 py-5">
-      {/* logo */}
-      <Link href="/" className="flex items-center">
-        <Image
-          src="/publicapilogo-light.png"
-          alt="Public API Explorer"
-          width={120}
-          height={40}
-          className="h-10 w-auto"
-        />
-      </Link>
+const Navbar = () => {
+  const [isOpen, setIsOpen] = useState(false);
 
-      {/* links + dark-mode toggle */}
-      <div className="flex items-center gap-4 md:gap-6 text-base md:text-lg font-medium">
-        <Link
-          href="/add-api"
-          className="inline-flex items-center gap-2 text-lg text-white hover:underline transition"
-        >
-          <PlusCircle
-            className="w-5 h-5 md:hidden"
-            aria-label="Add your API"
-            title="Add your API"
+  const toggleMenu = () => setIsOpen(!isOpen);
+
+  // Close menu on escape key
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === "Escape") setIsOpen(false);
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleEscape);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
+  return (
+    <header className="w-full bg-indigo-500 text-white dark:bg-indigo-600">
+      <nav className="mx-auto max-w-6xl px-4 md:px-8 py-5 flex items-center justify-between relative">
+        <Link href="/" className="flex items-center">
+          <Image
+            src="/publicapilogo-light.png"
+            alt="Public API Explorer"
+            width={120}
+            height={40}
+            className="h-10 w-auto"
           />
-          <span className="hidden md:inline">Add your API</span>
         </Link>
 
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1 hover:text-indigo-200"
-        >
-          <Home className="w-5 h-5 md:hidden" aria-label="Home" title="Home" />
-          <span className="hidden md:inline">Home</span>
-        </Link>
+        {/* Desktop menu */}
+        <div className="hidden md:flex items-center gap-4 md:gap-6 text-base md:text-lg font-medium">
+          <Link
+            href="/add-api"
+            className="inline-flex items-center gap-2 text-lg text-white hover:underline transition"
+          >
+            <span>Add your API</span>
+          </Link>
 
-        <Link
-          href="/favorites"
-          className="inline-flex items-center gap-1 hover:text-indigo-200"
-        >
-          <Star
-            className="w-5 h-5 md:hidden"
-            aria-label="Favorites"
-            title="Favorites"
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1 hover:text-indigo-200 transition"
+          >
+            <span>Home</span>
+          </Link>
+
+          <Link
+            href="/favorites"
+            className="inline-flex items-center gap-1 hover:text-indigo-200 transition"
+          >
+            <span>Favorites</span>
+          </Link>
+
+          <Link
+            href="/library"
+            className="inline-flex items-center gap-1 hover:text-indigo-200 transition"
+          >
+            <span>Library</span>
+          </Link>
+
+          <div className="flex items-center">
+            <div className="scale-110 transform translate-y-[2px]">
+              <GitHubButton
+                href="https://github.com/Adityan05/public-api-explorer"
+                data-color-scheme="no-preference: light; light: light; dark: dark;"
+                data-show-count="true"
+                data-size="large"
+                aria-label="Star your-repo-name on GitHub"
+              >
+                Star on GitHub
+              </GitHubButton>
+            </div>
+          </div>
+
+          <ThemeToggle />
+        </div>
+
+        {/* Mobile menu button */}
+        <div className="md:hidden flex items-center gap-3">
+          <ThemeToggle />
+          <button
+            onClick={toggleMenu}
+            aria-label="Toggle menu"
+            className="focus:outline-none hover:text-indigo-200 transition-all duration-200 hover:scale-105 z-50 relative"
+          >
+            <div className="relative w-6 h-6">
+              <Menu
+                className={`w-6 h-6 absolute transition-all duration-300 ease-in-out ${
+                  isOpen
+                    ? "opacity-0 rotate-90 scale-75"
+                    : "opacity-100 rotate-0 scale-100"
+                }`}
+              />
+              <X
+                className={`w-6 h-6 absolute transition-all duration-300 ease-in-out ${
+                  isOpen
+                    ? "opacity-100 rotate-0 scale-100"
+                    : "opacity-0 -rotate-90 scale-75"
+                }`}
+              />
+            </div>
+          </button>
+        </div>
+
+        {/* Full-screen blur backdrop */}
+        {isOpen && (
+          <div
+            className="fixed inset-0 bg-black/20 backdrop-blur-md z-40 md:hidden"
+            onClick={() => setIsOpen(false)}
           />
-          <span className="hidden md:inline">Favorites</span>
-        </Link>
+        )}
 
-        <ThemeToggle />
-      </div>
-    </nav>
-  </header>
-);
+        {/* Side sliding menu */}
+        <div
+          className={`fixed top-0 right-0 h-full w-80 bg-indigo-500/95 dark:bg-indigo-600/95 backdrop-blur-xl border-l border-indigo-400/30 dark:border-indigo-700/30 shadow-2xl z-50 md:hidden transform transition-transform duration-300 ease-out ${
+            isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
+        >
+          {/* Header with close button */}
+          <div className="flex items-center justify-between p-6 border-b border-indigo-400/30 dark:border-indigo-700/30">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 rounded-full hover:bg-indigo-600/50 dark:hover:bg-indigo-700/50 transition-colors"
+              aria-label="Close menu"
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
+          </div>
+
+          {/* Menu items */}
+          <div className="px-6 py-8 space-y-1">
+            <Link
+              href="/add-api"
+              className="flex items-center px-4 py-4 text-white rounded-xl hover:bg-indigo-600/50 dark:hover:bg-indigo-700/50 transition-all duration-200 group"
+              onClick={() => setIsOpen(false)}
+            >
+              <PlusCircle className="w-5 h-5 mr-4 group-hover:scale-110 transition-transform duration-200" />
+              <span className="text-lg">Add your API</span>
+            </Link>
+
+            <Link
+              href="/"
+              className="flex items-center px-4 py-4 text-white rounded-xl hover:bg-indigo-600/50 dark:hover:bg-indigo-700/50 transition-all duration-200 group"
+              onClick={() => setIsOpen(false)}
+            >
+              <Home className="w-5 h-5 mr-4 group-hover:scale-110 transition-transform duration-200" />
+              <span className="text-lg">Home</span>
+            </Link>
+
+            <Link
+              href="/favorites"
+              className="flex items-center px-4 py-4 text-white rounded-xl hover:bg-indigo-600/50 dark:hover:bg-indigo-700/50 transition-all duration-200 group"
+              onClick={() => setIsOpen(false)}
+            >
+              <Heart className="w-5 h-5 mr-4 group-hover:scale-110 transition-transform duration-200" />
+              <span className="text-lg">Favorites</span>
+            </Link>
+
+            <Link
+              href="/library"
+              className="flex items-center px-4 py-4 text-white rounded-xl hover:bg-indigo-600/50 dark:hover:bg-indigo-700/50 transition-all duration-200 group"
+              onClick={() => setIsOpen(false)}
+            >
+              <BookOpen className="w-5 h-5 mr-4 group-hover:scale-110 transition-transform duration-200" />
+              <span className="text-lg">Library</span>
+            </Link>
+
+            {/* GitHub Star Button in Mobile Menu */}
+            <div className="px-4 py-4">
+              <div className="transform scale-125 origin-left">
+                <GitHubButton
+                  href="https://github.com/Adityan05/public-api-explorer"
+                  data-color-scheme="no-preference: light; light: light; dark: dark;"
+                  data-show-count="true"
+                  data-size="large"
+                  aria-label="Star your-repo-name on GitHub"
+                >
+                  Star on GitHub
+                </GitHubButton>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-indigo-400/30 dark:border-indigo-700/30">
+            <div className="text-center text-indigo-200 text-sm">
+              PublicAPI Explorer
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+  );
+};
 
 export default Navbar;
