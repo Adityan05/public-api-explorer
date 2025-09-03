@@ -5,14 +5,13 @@ import APICard from "@/components/APICard";
 import BackButton from "@/components/BackButton";
 import { Search, BookOpen } from "lucide-react";
 import { getAllApis } from "@/utils/apiConfig";
-import LoadingSpinner from "@/components/LoadingSpinner"; // Add this import
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 const LibraryPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [allApis, setAllApis] = useState([]);
   const [filteredAPIs, setFilteredAPIs] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(9);
   const [loading, setLoading] = useState(true);
 
   // Fetch all APIs once
@@ -36,12 +35,9 @@ const LibraryPage = () => {
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearchTerm(searchTerm);
-      setVisibleCount(9); // Reset visible count on new search
     }, 300);
 
-    return () => {
-      clearTimeout(handler);
-    };
+    return () => clearTimeout(handler);
   }, [searchTerm]);
 
   // Filter APIs based on debounced search term
@@ -60,25 +56,6 @@ const LibraryPage = () => {
       );
     }
   }, [debouncedSearchTerm, allApis]);
-
-  // Infinite scroll
-  useEffect(() => {
-    const handleScroll = () => {
-      if (
-        window.innerHeight + window.scrollY >=
-          document.body.offsetHeight - 1000 &&
-        visibleCount < filteredAPIs.length
-      ) {
-        setVisibleCount((prev) => Math.min(prev + 9, filteredAPIs.length));
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [visibleCount, filteredAPIs.length]);
 
   if (loading) {
     return (
@@ -112,6 +89,7 @@ const LibraryPage = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 md:w-5 md:h-5 pointer-events-none" />
               <input
                 type="text"
+                aria-label="Search APIs"
                 placeholder="Search APIs..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -122,22 +100,30 @@ const LibraryPage = () => {
         </div>
 
         {/* Results section */}
-        {filteredAPIs.length === 0 && debouncedSearchTerm ? (
+        {filteredAPIs.length === 0 ? (
           <div className="text-center py-12 mb-10">
-            <div className="text-gray-500 dark:text-gray-400 mb-4 text-sm md:text-base">
-              No APIs found matching "{debouncedSearchTerm}"
-            </div>
-            <button
-              onClick={() => setSearchTerm("")}
-              className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm md:text-base"
-            >
-              Clear search
-            </button>
+            {allApis.length === 0 ? (
+              <div className="text-gray-500 dark:text-gray-400 text-sm md:text-base">
+                No APIs available right now.
+              </div>
+            ) : (
+              <>
+                <div className="text-gray-500 dark:text-gray-400 mb-4 text-sm md:text-base">
+                  No APIs found matching "{debouncedSearchTerm}"
+                </div>
+                <button
+                  onClick={() => setSearchTerm("")}
+                  className="text-indigo-600 hover:text-indigo-700 font-semibold text-sm md:text-base"
+                >
+                  Clear search
+                </button>
+              </>
+            )}
           </div>
         ) : (
           /* API Cards Grid */
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-y-8 gap-x-6 sm:gap-6 mb-12 px-3 sm:px-0">
-            {filteredAPIs.slice(0, visibleCount).map((api) => (
+            {filteredAPIs.map((api) => (
               <APICard
                 key={api.slug}
                 image={api.image}
