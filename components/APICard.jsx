@@ -19,7 +19,7 @@ const APICard = ({
       group bg-white dark:bg-slate-800 rounded-lg shadow-md overflow-hidden flex flex-col
       transition-all duration-300 ease-out
       hover:-translate-y-2 hover:shadow-xl dark:hover:shadow-2xl dark:hover:shadow-indigo-500/10
-      will-change-transform relative border border-gray-100 dark:border-slate-700/50
+      will-change-transform relative border border-gray-300/50 dark:border-slate-700/50
     "
     >
       {/* Make the card clickable with an overlay Link */}

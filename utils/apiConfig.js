@@ -15,6 +15,7 @@ const transformApiData = (dbRow) => ({
   https: dbRow.https,
   cors: dbRow.cors,
   endpoints: dbRow.endpoints,
+  score: dbRow.score, // ADD THIS LINE - Include score in transformation
 });
 
 // Cache for performance (optional)
@@ -49,7 +50,27 @@ const fetchApiConfig = async () => {
   }
 };
 
-// Keep your original exports working
+// NEW FUNCTION: Get top APIs by score for homepage ISR
+export const getTopApis = async (limit = 6) => {
+  try {
+    const { data, error } = await supabase
+      .from("apis")
+      .select("*")
+      .eq("active", true)
+      .order("score", { ascending: false }) // Sort by score DESC (highest first)
+      .order("name") // Secondary sort for consistency
+      .limit(limit); // Server-side limit to top 6
+
+    if (error) throw error;
+
+    return data.map(transformApiData);
+  } catch (error) {
+    console.error("Error fetching top APIs:", error);
+    return [];
+  }
+};
+
+// Keep your original exports working (for library page, etc.)
 export const getAllApis = async () => {
   const config = await fetchApiConfig();
   return Object.values(config);
