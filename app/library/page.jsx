@@ -5,6 +5,7 @@ import APICard from "@/components/APICard";
 import BackButton from "@/components/BackButton";
 import { Search, BookOpen } from "lucide-react";
 import { getAllApis } from "@/utils/apiConfig";
+import LoadingSpinner from "@/components/LoadingSpinner"; // Add this import
 
 const LibraryPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -81,10 +82,8 @@ const LibraryPage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
-        <div className="text-gray-600 dark:text-gray-400">
-          Loading API library...
-        </div>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <LoadingSpinner size={56} speed={1.4} />
       </div>
     );
   }
