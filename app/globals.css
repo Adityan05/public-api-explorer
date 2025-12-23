@@ -1,17 +1,2 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
-
-@keyframes pulseGradient {
-  0% {
-    transform: translate3d(0, 0, 0) scale(1);
-    filter: brightness(1);
-  }
-  50% {
-    transform: translate3d(-2%, 2%, 0) scale(1.03);
-    filter: brightness(1.08);
-  }
-  100% {
-    transform: translate3d(0, 0, 0) scale(1);
-    filter: brightness(1);
-  }
-}
