@@ -1,2 +1,33 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
+:root {
+  --marquee-bg: rgba(235, 238, 245, 0.95);
+  --card-bg: linear-gradient(135deg, #ffffff, #f1f5f9);
+  --card-border: rgba(0, 0, 0, 0.12);
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --fade-bg: rgba(235, 238, 245, 1);
+  --skeleton-base: rgba(0, 0, 0, 0.06);
+  --skeleton-highlight: rgba(0, 0, 0, 0.12);
+  --tag-bg: rgba(59, 130, 246, 0.08);
+  --tag-text: #1e40af;
+  --tag-border: rgba(59, 130, 246, 0.2);
+}
+
+html.dark {
+  --marquee-bg: rgba(10, 15, 30, 0.6);
+  --card-bg: linear-gradient(
+    135deg,
+    rgba(25, 30, 50, 0.95),
+    rgba(15, 20, 35, 0.98)
+  );
+  --card-border: rgba(255, 255, 255, 0.1);
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --fade-bg: rgba(10, 15, 30, 1);
+  --skeleton-base: rgba(255, 255, 255, 0.06);
+  --skeleton-highlight: rgba(255, 255, 255, 0.14);
+  --tag-bg: rgba(59, 130, 246, 0.15);
+  --tag-text: #93c5fd;
+  --tag-border: rgba(59, 130, 246, 0.3);
+}

@@ -1,10 +1,17 @@
 /* Container */
+.slider,
+.card {
+  transition: background-color 0.25s ease, color 0.25s ease,
+    border-color 0.25s ease;
+}
 .slider {
   position: relative;
   overflow: hidden;
   border-radius: 20px;
-  background: rgba(10, 15, 30, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--marquee-bg);
+  border: 1px solid var(--card-border);
+  /* background: rgba(10, 15, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08); */
 }
 
 /* Moving track */
@@ -19,15 +26,18 @@
 .card {
   min-width: 260px;
   flex-shrink: 0;
-  background: linear-gradient(
+  background: var(--card-bg);
+  /* background: linear-gradient(
     135deg,
     rgba(25, 30, 50, 0.95),
     rgba(15, 20, 35, 0.98)
-  );
+  ); */
   border-radius: 16px;
   padding: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #e5e7eb;
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  /* border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e5e7eb; */
 }
 
 /* Header */
@@ -51,9 +61,9 @@
   font-size: 10px;
   padding: 4px 8px;
   border-radius: 999px;
-  background: rgba(59, 130, 246, 0.15);
-  color: #93c5fd;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border: 1px solid var(--tag-border);
 }
 
 /* Main value */
@@ -85,19 +95,27 @@
 
 .slider::before {
   left: 0;
-  background: linear-gradient(to right, rgba(10, 15, 30, 1), transparent);
+  /* background: linear-gradient(to right, rgba(10, 15, 30, 1), transparent); */
+  background: linear-gradient(to right, var(--fade-bg), transparent);
 }
 
 .slider::after {
   right: 0;
-  background: linear-gradient(to left, rgba(10, 15, 30, 1), transparent);
+  /* background: linear-gradient(to left, rgba(10, 15, 30, 1), transparent); */
+  background: linear-gradient(to left, var(--fade-bg), transparent);
 }
 .skeleton {
-  background: linear-gradient(
+  /* background: linear-gradient(
     90deg,
     rgba(255, 255, 255, 0.05),
     rgba(255, 255, 255, 0.15),
     rgba(255, 255, 255, 0.05)
+  ); */
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base),
+    var(--skeleton-highlight),
+    var(--skeleton-base)
   );
   background-size: 200% 100%;
   animation: shimmer 1.4s infinite;
@@ -133,4 +151,8 @@
   to {
     background-position: -200% 0;
   }
+}
+.label,
+.subtitle {
+  color: var(--text-secondary);
 }

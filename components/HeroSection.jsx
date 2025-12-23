@@ -34,10 +34,12 @@ const HeroSection = () => {
         <div className="mb-24">
           <LiveInsightsMarquee />
         </div>
-        <h1 className="text-4xl md:text-4xl font-semibold text-gray-900 dark:text-white mb-10">
-          Explore Public APIs with{" "}
-          <span className="text-indigo-600 dark:text-indigo-400">Ease</span>
-        </h1>
+        <p className="max-w-3xl mx-auto mt-6 text-lg md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-10">
+          PublicAPI Explorer lets you find, test, and use public APIs instantly.
+          <br />
+          No setup. No API keys. Just real APIs and real data.
+        </p>
+
         {/* -------- Existing Feature Cards -------- */}
         <div className="grid md:grid-cols-3 gap-6 mb-12">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
