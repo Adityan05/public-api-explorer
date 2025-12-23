@@ -14,6 +14,17 @@ const LibraryPage = () => {
   const [filteredAPIs, setFilteredAPIs] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Restore previous scroll position if available; default to top on first visit
+  useEffect(() => {
+    const stored = sessionStorage.getItem("libraryScrollY");
+    const target = stored ? Number(stored) || 0 : 0;
+    window.scrollTo({ top: target, behavior: "instant" });
+
+    return () => {
+      sessionStorage.setItem("libraryScrollY", String(window.scrollY));
+    };
+  }, []);
+
   // Fetch all APIs once
   useEffect(() => {
     const fetchApis = async () => {
@@ -134,6 +145,7 @@ const LibraryPage = () => {
                 slug={api.slug}
                 https={api.https}
                 cors={api.cors}
+                accessType={api.accessType}
               />
             ))}
           </div>

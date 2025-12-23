@@ -5,7 +5,7 @@ const transformApiData = (dbRow) => ({
   name: dbRow.name,
   slug: dbRow.slug,
   description: dbRow.description,
-  image: dbRow.image,
+  image: dbRow.image || "/publicapibanner.png",
   isLogo: dbRow.is_logo,
   bgGradient: dbRow.bg_gradient,
   websiteUrl: dbRow.website_url,
@@ -14,6 +14,7 @@ const transformApiData = (dbRow) => ({
   tags: dbRow.tags,
   https: dbRow.https,
   cors: dbRow.cors,
+  accessType: dbRow.access_type,
   endpoints: dbRow.endpoints,
   score: dbRow.score, // ADD THIS LINE - Include score in transformation
 });

@@ -32,8 +32,15 @@ const Navbar = () => {
   }, [isOpen]);
 
   return (
-    <header className="w-full bg-indigo-500 text-white dark:bg-indigo-600">
-      <nav className="mx-auto max-w-6xl px-4 md:px-8 py-5 flex items-center justify-between relative">
+    <header className="relative overflow-hidden w-full bg-indigo-600 text-white dark:bg-indigo-700">
+      {/* Animated gradient backdrop */}
+      <div className="pointer-events-none absolute inset-0 opacity-90">
+        <div
+          className="absolute inset-[-40%] bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.4),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.28),transparent_35%),radial-gradient(circle_at_40%_80%,rgba(255,255,255,0.2),transparent_35%)]"
+        />
+      </div>
+
+      <nav className="relative mx-auto max-w-6xl px-4 md:px-8 py-5 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
             src="/publicapilogo-light.png"
@@ -101,18 +108,16 @@ const Navbar = () => {
           >
             <div className="relative w-6 h-6">
               <Menu
-                className={`w-6 h-6 absolute transition-all duration-300 ease-in-out ${
-                  isOpen
+                className={`w-6 h-6 absolute transition-all duration-300 ease-in-out ${isOpen
                     ? "opacity-0 rotate-90 scale-75"
                     : "opacity-100 rotate-0 scale-100"
-                }`}
+                  }`}
               />
               <X
-                className={`w-6 h-6 absolute transition-all duration-300 ease-in-out ${
-                  isOpen
+                className={`w-6 h-6 absolute transition-all duration-300 ease-in-out ${isOpen
                     ? "opacity-100 rotate-0 scale-100"
                     : "opacity-0 -rotate-90 scale-75"
-                }`}
+                  }`}
               />
             </div>
           </button>
@@ -128,9 +133,8 @@ const Navbar = () => {
 
         {/* Side sliding menu */}
         <div
-          className={`fixed top-0 right-0 h-full w-80 bg-indigo-500/95 dark:bg-indigo-600/95 backdrop-blur-xl border-l border-indigo-400/30 dark:border-indigo-700/30 shadow-2xl z-50 md:hidden transform transition-transform duration-300 ease-out ${
-            isOpen ? "translate-x-0" : "translate-x-full"
-          }`}
+          className={`fixed top-0 right-0 h-full w-80 bg-indigo-500/95 dark:bg-indigo-600/95 backdrop-blur-xl border-l border-indigo-400/30 dark:border-indigo-700/30 shadow-2xl z-50 md:hidden transform transition-transform duration-300 ease-out ${isOpen ? "translate-x-0" : "translate-x-full"
+            }`}
         >
           {/* Header with close button */}
           <div className="flex items-center justify-between p-6 border-b border-indigo-400/30 dark:border-indigo-700/30">

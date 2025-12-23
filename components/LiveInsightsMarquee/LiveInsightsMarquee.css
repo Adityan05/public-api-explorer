@@ -1,0 +1,158 @@
+/* Container */
+.slider,
+.card {
+  transition: background-color 0.25s ease, color 0.25s ease,
+    border-color 0.25s ease;
+}
+.slider {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: var(--marquee-bg);
+  border: 1px solid var(--card-border);
+  /* background: rgba(10, 15, 30, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08); */
+}
+
+/* Moving track */
+.track {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  will-change: transform;
+}
+
+/* Card */
+.card {
+  min-width: 260px;
+  flex-shrink: 0;
+  background: var(--card-bg);
+  /* background: linear-gradient(
+    135deg,
+    rgba(25, 30, 50, 0.95),
+    rgba(15, 20, 35, 0.98)
+  ); */
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  /* border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #e5e7eb; */
+}
+
+/* Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+/* Small label */
+.label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+/* Tag pill */
+.tag {
+  font-size: 10px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: var(--tag-bg);
+  color: var(--tag-text);
+  border: 1px solid var(--tag-border);
+}
+
+/* Main value */
+.value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+
+/* Subtitle */
+.subtitle {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  line-height: 1.4;
+}
+
+/* Optional: fade edges for polish */
+.slider::before,
+.slider::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 60px;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.slider::before {
+  left: 0;
+  /* background: linear-gradient(to right, rgba(10, 15, 30, 1), transparent); */
+  background: linear-gradient(to right, var(--fade-bg), transparent);
+}
+
+.slider::after {
+  right: 0;
+  /* background: linear-gradient(to left, rgba(10, 15, 30, 1), transparent); */
+  background: linear-gradient(to left, var(--fade-bg), transparent);
+}
+.skeleton {
+  /* background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.05)
+  ); */
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base),
+    var(--skeleton-highlight),
+    var(--skeleton-base)
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 6px;
+}
+
+.skeleton-label {
+  width: 80px;
+  height: 12px;
+}
+
+.skeleton-tag {
+  width: 50px;
+  height: 18px;
+  border-radius: 999px;
+}
+
+.skeleton-value {
+  width: 140px;
+  height: 32px;
+  margin: 10px 0;
+}
+
+.skeleton-subtitle {
+  width: 100%;
+  height: 14px;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+.label,
+.subtitle {
+  color: var(--text-secondary);
+}

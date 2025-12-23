@@ -12,7 +12,10 @@ const APICard = ({
   slug,
   https,
   cors,
+  accessType,
 }) => {
+  const displayImage = image || "/publicapibanner.png";
+
   return (
     <div
       className="
@@ -34,7 +37,7 @@ const APICard = ({
         style={bgGradient ? { background: bgGradient } : undefined}
       >
         <Image
-          src={image}
+          src={displayImage}
           alt={`${name} ${isLogo ? "Logo" : ""}`}
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
@@ -72,7 +75,7 @@ const APICard = ({
           <div className="relative z-20">
             <FavoriteButton
               apiData={{
-                image,
+                image: displayImage,
                 name,
                 description,
                 slug,
@@ -80,13 +83,14 @@ const APICard = ({
                 isLogo,
                 https,
                 cors,
+                accessType,
               }}
             />
           </div>
 
           {/* Right: Badges */}
           <div className="flex gap-2">
-            <ApiBadge ok={https} label="HTTPS" />
+            {accessType === "blocked" && <ApiBadge ok={false} label="Issues" />}
             <ApiBadge ok={cors} label="CORS" />
           </div>
         </div>
