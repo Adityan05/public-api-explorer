@@ -4,6 +4,7 @@ import RunButtonManager from "@/components/RunButtonManager";
 import { BookOpen, ExternalLink } from "lucide-react";
 import { getApiBySlug } from "@/utils/apiConfig";
 import ScrollToTop from "@/components/ScrollToTop";
+import ApiBadge from "@/components/ApiBadge";
 
 const APIDetailsPage = async ({ params }) => {
   const { slug } = await params;
@@ -60,6 +61,7 @@ const APIDetailsPage = async ({ params }) => {
                     {tag}
                   </span>
                 ))}
+                <ApiBadge ok={api.cors} label="CORS" />
               </div>
 
               {/* Action Buttons */}

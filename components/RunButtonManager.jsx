@@ -7,6 +7,9 @@ import { Copy, Check, Play } from "lucide-react";
 const RunButtonManager = ({ api }) => {
   const [copiedIndex, setCopiedIndex] = useState(null);
   const [testerUrl, setTesterUrl] = useState(""); // This manages the URL for ApiTester
+  const accessType = api.accessType || api.access_type;
+  const isBlocked = accessType === "blocked";
+  const useProxy = accessType === "server";
 
   const copyToClipboard = async (text, index) => {
     try {
@@ -19,6 +22,8 @@ const RunButtonManager = ({ api }) => {
   };
 
   const runEndpoint = (fullUrl) => {
+    if (isBlocked) return;
+
     setTesterUrl(fullUrl); // Update the tester URL
     // Scroll to API tester
     setTimeout(() => {
@@ -88,8 +93,15 @@ const RunButtonManager = ({ api }) => {
                     onClick={() =>
                       runEndpoint(`${api.apiBaseUrl}${endpoint.path}`)
                     }
-                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700 transition"
-                    title="Run endpoint"
+                    disabled={isBlocked}
+                    className="flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-white bg-indigo-600 rounded hover:bg-indigo-700 transition disabled:bg-indigo-300 disabled:cursor-not-allowed"
+                    title={
+                      isBlocked
+                        ? "This API is currently blocked"
+                        : useProxy
+                        ? "Run via proxy"
+                        : "Run endpoint"
+                    }
                   >
                     <Play className="w-3 h-3" />
                     Run
@@ -107,7 +119,11 @@ const RunButtonManager = ({ api }) => {
           Live Tester
         </h2>
         <div id="api-tester">
-          <ApiTester runUrl={testerUrl} corsSupported={api.cors} />
+          <ApiTester
+            runUrl={testerUrl}
+            corsSupported={api.cors}
+            accessType={accessType}
+          />
         </div>
       </section>
     </>

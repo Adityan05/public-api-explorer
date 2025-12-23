@@ -134,6 +134,7 @@ const LibraryPage = () => {
                 slug={api.slug}
                 https={api.https}
                 cors={api.cors}
+                accessType={api.accessType}
               />
             ))}
           </div>

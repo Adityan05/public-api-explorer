@@ -25,6 +25,7 @@ const Main = async () => {
             slug={api.slug}
             https={api.https}
             cors={api.cors}
+            accessType={api.accessType}
           />
         ))}
       </div>

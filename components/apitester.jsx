@@ -12,12 +12,29 @@ import { githubLightTheme } from "@uiw/react-json-view/githubLight";
 /* lazy-load JSON viewer */
 const JsonView = dynamic(() => import("@uiw/react-json-view"), { ssr: false });
 
-export default function ApiTester({ runUrl = "", corsSupported = true }) {
+export default function ApiTester({
+  runUrl = "",
+  corsSupported = true,
+  accessType = "browser",
+}) {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [response, setResponse] = useState(null);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const isBlocked = accessType === "blocked";
+  const requiresBrowser = !corsSupported && accessType !== "server";
+
+  const buildTarget = useCallback(
+    (rawUrl) => {
+      if (!rawUrl) return null;
+      if (accessType === "server") {
+        return `/api/proxy?url=${encodeURIComponent(rawUrl)}`;
+      }
+      return rawUrl;
+    },
+    [accessType]
+  );
 
   useEffect(() => {
     const checkDarkMode = () =>
@@ -37,36 +54,61 @@ export default function ApiTester({ runUrl = "", corsSupported = true }) {
     return () => observer.disconnect();
   }, []);
 
-  const fetchUrl = useCallback(async (target) => {
-    if (!target) return;
-    setLoading(true);
-    setError(null);
-    setResponse(null);
+  const fetchUrl = useCallback(
+    async (target) => {
+      if (!target || isBlocked) return;
 
-    try {
-      const res = await fetch(target);
-      if (!res.ok) throw new Error(res.statusText);
-      const data = await res.json();
-      setResponse(data);
-    } catch (err) {
-      setError(err.message || "Unknown error");
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      const targetUrl = buildTarget(target);
+      if (!targetUrl) return;
+
+      setLoading(true);
+      setError(null);
+      setResponse(null);
+
+      try {
+        const res = await fetch(targetUrl, { cache: "no-store" });
+        const contentType = res.headers.get("content-type") || "";
+        let data;
+
+        if (contentType.includes("application/json")) {
+          data = await res.json();
+        } else {
+          const text = await res.text();
+          try {
+            data = JSON.parse(text);
+          } catch (parseErr) {
+            data = { data: text };
+          }
+        }
+
+        if (!res.ok) {
+          throw new Error(
+            `Request failed with status ${res.status}${res.statusText ? ` - ${res.statusText}` : ""}`
+          );
+        }
+
+        setResponse(data);
+      } catch (err) {
+        setError(err.message || "Unknown error");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [buildTarget, isBlocked]
+  );
 
   useEffect(() => {
-    if (runUrl && corsSupported) {
+    if (runUrl) {
       setUrl(runUrl);
-      fetchUrl(runUrl);
-    } else if (runUrl && !corsSupported) {
-      setUrl(runUrl);
+      if (!isBlocked && (corsSupported || accessType === "server")) {
+        fetchUrl(runUrl);
+      }
     }
-  }, [runUrl, fetchUrl, corsSupported]);
+  }, [runUrl, fetchUrl, corsSupported, accessType, isBlocked]);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    if (!corsSupported) return;
+    if (isBlocked || requiresBrowser) return;
     fetchUrl(url);
   };
 
@@ -78,13 +120,13 @@ export default function ApiTester({ runUrl = "", corsSupported = true }) {
           onChange={(e) => setUrl(e.target.value)}
           placeholder="https://api.example.com/endpoint"
           className={`flex-1 rounded-md border px-3 py-2 text-sm bg-white dark:bg-gray-800 dark:text-gray-100 border-gray-300 dark:border-gray-700 transition-opacity ${
-            !corsSupported ? "opacity-50 cursor-not-allowed" : ""
+            requiresBrowser || isBlocked ? "opacity-50 cursor-not-allowed" : ""
           }`}
-          disabled={!corsSupported}
+          disabled={requiresBrowser || isBlocked}
         />
         <button
           type="submit"
-          disabled={loading || !url || !corsSupported}
+          disabled={loading || !url || requiresBrowser || isBlocked}
           className="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white disabled:cursor-not-allowed disabled:bg-indigo-300 dark:disabled:bg-indigo-600/50"
         >
           {loading ? "Loading…" : "Send"}
@@ -93,7 +135,7 @@ export default function ApiTester({ runUrl = "", corsSupported = true }) {
 
       <div className="relative h-72 overflow-auto rounded-md bg-gray-50 dark:bg-gray-800 p-3 text-xs text-gray-900 dark:text-gray-100">
         {/* CORS Not Supported Overlay - Enhanced */}
-        {!corsSupported && (
+        {(requiresBrowser || isBlocked) && (
           <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-md bg-white/10 dark:bg-gray-900/10 rounded-md">
             <div className="relative">
               {/* Background blur effect */}
@@ -107,14 +149,17 @@ export default function ApiTester({ runUrl = "", corsSupported = true }) {
 
                 <div className="text-center space-y-2">
                   <h3 className="font-semibold text-base text-indigo-600 dark:text-indigo-400">
-                    CORS Not Supported
+                    {isBlocked ? "Issues" : "CORS Not Supported"}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 max-w-xs leading-relaxed">
-                    This API cannot be tested directly in the browser due to
-                    CORS restrictions.
+                    {isBlocked
+                      ? "This API is temporarily blocked in the explorer."
+                      : "This API cannot be tested directly in the browser due to CORS restrictions."}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-500">
-                    Try using a tool like Postman or curl instead.
+                    {isBlocked
+                      ? "Try the docs or site for more details."
+                      : "Try using a tool like Postman or curl instead."}
                   </p>
                 </div>
               </div>
