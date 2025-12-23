@@ -32,8 +32,16 @@ const Navbar = () => {
   }, [isOpen]);
 
   return (
-    <header className="w-full bg-indigo-500 text-white dark:bg-indigo-600">
-      <nav className="mx-auto max-w-6xl px-4 md:px-8 py-5 flex items-center justify-between relative">
+    <header className="relative overflow-hidden w-full bg-indigo-600 text-white dark:bg-indigo-700">
+      {/* Animated gradient backdrop */}
+      <div className="pointer-events-none absolute inset-0 opacity-90">
+        <div
+          className="absolute inset-[-40%] bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.4),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(255,255,255,0.28),transparent_35%),radial-gradient(circle_at_40%_80%,rgba(255,255,255,0.2),transparent_35%)]"
+          style={{ animation: "pulseGradient 14s ease-in-out infinite" }}
+        />
+      </div>
+
+      <nav className="relative mx-auto max-w-6xl px-4 md:px-8 py-5 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <Image
             src="/publicapilogo-light.png"
